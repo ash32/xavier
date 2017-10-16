@@ -24,9 +24,23 @@ endif
 requirements: test_environment
 	pip install -r requirements.txt
 
+## Get raw data from Poloniex
+poloniex_raw: requirements
+	mkdir -p data/raw/poloniex
+	rm -f data/raw/poloniex/*
+	$(PYTHON_INTERPRETER) src/data/poloniex/get_data.py get_raw_data data/raw/poloniex/
+
+## Process raw data from Poloniex
+poloniex_process: requirements
+	mkdir -p data/processed/poloniex
+	rm -f data/processed/poloniex/*
+	$(PYTHON_INTERPRETER) src/data/poloniex/get_data.py process_data data/raw/poloniex/ data/processed/poloniex/
+
+## Get and process Poloniex data
+poloniex: poloniex_raw poloniex_process
+
 ## Make Dataset
-data: requirements
-	$(PYTHON_INTERPRETER) src/data/make_dataset.py
+data: poloniex
 
 ## Delete all compiled Python files
 clean:

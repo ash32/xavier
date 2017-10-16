@@ -1,0 +1,19 @@
+poloniex:
+  btc_pairs:
+    - BTC_XRP
+    - BTC_ETH
+    - BTC_LTC
+    - BTC_ZEC
+    - BTC_BCH
+    - BTC_STR
+    - BTC_BTS
+    - BTC_XMR
+    - BTC_XEM
+    - BTC_DASH
+
+  base_url: https://poloniex.com/public
+  url_params:
+    start: 1404172800   # July 1, 2014
+    end: 9999999999     # till present
+    period: 1800        # 30 mins
+    command: returnChartData
