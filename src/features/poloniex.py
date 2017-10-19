@@ -23,6 +23,8 @@ class RelativePricingFeatureGenerator(FeatureGenerator):
         u[:] = 1-q
         return np.cumprod(u)[::-1] * q
 
+    def get_
+
     def generate_training_batch(self, sample_bias=0.00005, batch_size=50):
         total = self.train_df.shape[0]
         geo_size = total - batch_size - self.num_periods + 1
@@ -36,4 +38,10 @@ class RelativePricingFeatureGenerator(FeatureGenerator):
         vals = self.train_df.iloc[start_idx:end_idx]
 
         # Convert to numpy array
+        shape = vals.shape
+        vals = vals.as_matrix().reshape((shape[0], shape[1]/3, 3))
+        vals = vals / vals[-1, :, 0].reshape((1, -1, 1))  # normalize by the most recent closing price for all assets
+
+        return vals
+
 

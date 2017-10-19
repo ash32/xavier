@@ -1,15 +1,20 @@
 poloniex:
   btc_pairs:
-    - BTC_XRP
     - BTC_ETH
     - BTC_LTC
-    - BTC_ZEC
-    - BTC_BCH
-    - BTC_STR
-    - BTC_BTS
-    - BTC_XMR
-    - BTC_XEM
-    - BTC_DASH
+#    - BTC_XRP
+#    - BTC_ZEC
+#    - BTC_BCH
+#    - BTC_STR
+#    - BTC_BTS
+#    - BTC_XMR
+#    - BTC_XEM
+#    - BTC_DASH
+
+  usd_pairs:
+    - USDT_BTC
+    - USDT_ETH
+    - USDT_LTC
 
   base_url: https://poloniex.com/public
   url_params:
