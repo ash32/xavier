@@ -55,4 +55,5 @@ class ConvEIIE(TrainableModel):
             self.var_init = tf.global_variables_initializer()
             self.saver = tf.train.Saver()
 
-
+    def get_distribution_weights(self, closing_price_vec, prev_weight_vec):
+        pass

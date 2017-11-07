@@ -1,4 +1,4 @@
-.PHONY: clean data lint requirements sync_data_to_s3 sync_data_from_s3
+.PHONY: clean data lint requirements sync_data_to_s3 sync_data_from_s3 test
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -25,22 +25,26 @@ requirements: test_environment
 	pip install -r requirements.txt
 
 ## Get raw data from Poloniex
-poloniex_raw: requirements
+poloniex_raw:
 	mkdir -p data/raw/poloniex
 	rm -rf data/raw/poloniex/*
 	$(PYTHON_INTERPRETER) xavier/data/poloniex/get_data.py get_raw_data data/raw/poloniex/
 
 ## Process raw data from Poloniex
-poloniex_process: requirements
+poloniex_process:
 	mkdir -p data/processed/poloniex
 	rm -rf data/processed/poloniex/*
 	$(PYTHON_INTERPRETER) xavier/data/poloniex/get_data.py process_data data/raw/poloniex/ data/processed/poloniex/
 
 ## Get and process Poloniex data
-poloniex: poloniex_raw poloniex_process
+poloniex: requirements poloniex_raw poloniex_process
 
 ## Make Dataset
 data: poloniex
+
+## Run py.test
+test:
+	py.test
 
 ## Delete all compiled Python files
 clean:
