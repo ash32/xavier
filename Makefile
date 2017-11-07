@@ -27,14 +27,14 @@ requirements: test_environment
 ## Get raw data from Poloniex
 poloniex_raw: requirements
 	mkdir -p data/raw/poloniex
-	rm -f data/raw/poloniex/*
-	$(PYTHON_INTERPRETER) src/data/poloniex/get_data.py get_raw_data data/raw/poloniex/
+	rm -rf data/raw/poloniex/*
+	$(PYTHON_INTERPRETER) xavier/data/poloniex/get_data.py get_raw_data data/raw/poloniex/
 
 ## Process raw data from Poloniex
 poloniex_process: requirements
 	mkdir -p data/processed/poloniex
-	rm -f data/processed/poloniex/*
-	$(PYTHON_INTERPRETER) src/data/poloniex/get_data.py process_data data/raw/poloniex/ data/processed/poloniex/
+	rm -rf data/processed/poloniex/*
+	$(PYTHON_INTERPRETER) xavier/data/poloniex/get_data.py process_data data/raw/poloniex/ data/processed/poloniex/
 
 ## Get and process Poloniex data
 poloniex: poloniex_raw poloniex_process

@@ -29,15 +29,19 @@ def get_raw_data(raw_dir):
 
     base_url = conf['base_url']
     url_params = conf['url_params']
-    pairs = conf['btc_pairs']
+    pair_keys = ['btc_pairs', 'usd_pairs']
 
-    for pair in pairs:
-        logger.info('Retrieving {} pair..'.format(pair))
-        url_params['currencyPair'] = pair
+    for pk in pair_keys:
+        pairs = conf[pk]
+        for pair in pairs:
+            logger.info('Retrieving {} pair..'.format(pair))
+            url_params['currencyPair'] = pair
 
-        with open(os.path.join(raw_dir, '{}.json'.format(pair)), 'w') as f:
-            json_text = requests.get(base_url, params=url_params).text
-            f.write(json_text)
+            filename = os.path.join(raw_dir, pk, '{}.json'.format(pair))
+            os.makedirs(os.path.dirname(filename), exist_ok=True)
+            with open(filename, 'w') as f:
+                json_text = requests.get(base_url, params=url_params).text
+                f.write(json_text)
 
 
 def get_coin_symbol(filename):
@@ -46,7 +50,6 @@ def get_coin_symbol(filename):
 
 def create_data_frame(directory, filename):
     cols = ['close', 'high', 'low']
-    # dtypes = dict([cols, ])
     symbol = get_coin_symbol(filename)
 
     df = pd.read_json(os.path.join(directory, filename))
@@ -72,14 +75,19 @@ def process_data(raw_dir, processed_dir):
     dates = pd.date_range(start=start, end=end, freq='30min')
     dates = pd.DataFrame(dates).set_index(0)
 
-    files = os.listdir(raw_dir)
-    dfs = [create_data_frame(raw_dir, f) for f in files]
-    bigdf = functools.reduce(lambda x, y: x.join(y), dfs, dates)
-    bigdf = bigdf.fillna(method='bfill')
-    bigdf = bigdf.dropna(how='all')  # Drop NA rows from the end (in case datetime.now is ahead of the last row's date
+    folders = os.listdir(raw_dir)
+    for folder in folders:
+        folder_path = os.path.join(raw_dir, folder)
+        files = os.listdir(folder_path)
 
-    logger.info('Writing out pricing data frame..')
-    bigdf.to_csv(os.path.join(processed_dir, 'prices_df.csv'))
+        dfs = [create_data_frame(folder_path, f) for f in files]
+
+        bigdf = functools.reduce(lambda x, y: x.join(y), dfs, dates)
+        bigdf = bigdf.fillna(method='bfill')
+        bigdf = bigdf.dropna(how='all')  # Drop NA rows from the end (in case datetime.now is ahead of the last row's date
+
+        logger.info('Writing out {} data frame..'.format(folder))
+        bigdf.to_csv(os.path.join(processed_dir, '{}_df.csv'.format(folder)))
 
 
 if __name__ == '__main__':

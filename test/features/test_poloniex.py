@@ -2,7 +2,7 @@ import unittest
 
 from datetime import datetime
 
-from src.features.poloniex import RelativePricingFeatureGenerator
+from xavier.features.poloniex import RelativePricingFeatureGenerator
 
 
 class FeatureTest(unittest.TestCase):
@@ -15,4 +15,4 @@ class FeatureTest(unittest.TestCase):
         test_end = datetime.strptime('2017-10-19 05:00:00', fmt)
         self.gen = RelativePricingFeatureGenerator('test_df.csv',  num_periods=3)
 
-    def test_
+    # def test_

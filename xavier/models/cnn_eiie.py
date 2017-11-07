@@ -1,9 +1,9 @@
-from .base import BaseModel
+from xavier.models.base import TrainableModel
 
 import tensorflow as tf
 
 
-class ConvEIIE(BaseModel):
+class ConvEIIE(TrainableModel):
     training_op = None
     var_init = None
     saver = None

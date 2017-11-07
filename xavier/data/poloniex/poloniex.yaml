@@ -14,7 +14,7 @@ poloniex:
   usd_pairs:
     - USDT_BTC
     - USDT_ETH
-    - USDT_LTC
+#    - USDT_LTC
 
   base_url: https://poloniex.com/public
   url_params:

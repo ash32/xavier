@@ -1,6 +1,6 @@
 import tensorflow as tf
 import numpy as np
-from src.models.cnn_eiie import ConvEIIE
+from xavier.models.cnn_eiie import ConvEIIE
 
 
 class CnnTest(tf.test.TestCase):
